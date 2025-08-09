@@ -1,0 +1,128 @@
+# #10 - API REST
+
+# ✍️ Instruções para a atividade
+
+O objetivo desta atividade é que você utilize uma API pública disponível e crie um Front-End que consuma essa API.  
+
+### 📁 Estrutura dos arquivos
+
+1. Crie um novo repositório público no GitHub
+    - O README.md do repositório deve conter:
+        - Seu nome completo
+        - Descrição e Objetivo do projeto (destacando a API pública escolhida)
+        - Tecnologias utilizadas (você pode escolher a *stack* que quiser)
+        - Tabela com exemplos das requisições utilizadas em cada página. Ex.:
+            
+                                   **Página            | Tipo requisição | endpoint**
+            
+                                   index.html     | GET                      | posts/
+            
+                                   delete.html    | DELETE               | posts/
+            
+        - Créditos - Fontes de referência utilizadas
+
+### 💡 O projeto
+
+1. Você pode escolher qualquer API pública para desenvolver o seu projeto ou criar a sua própria “Fake-API” utilizando por exemplo o https://github.com/typicode/json-server. Algumas listas com APIs que podem ser utilizadas:
+    - https://github.com/public-apis/public-apis
+    - https://github.com/APIs-guru/openapi-directory
+    - https://github.com/toddmotto/public-apis
+2. Requisitos mínimos
+    - O seu projeto deve conter no mínimo 3 páginas.
+    - A página principal do projeto deve ser **`index.html`** na raiz do projeto.
+    - Todo o código CSS deve estar no arquivo **`css/estilo.css`**
+    - Todo o código JS deve estar no arquivo **`js/main.js`**
+    - O seu projeto deve conter images provenientes da API.
+    - Utilize pelo menos 2 métodos de requisição (GET, POST, PUT, DELETE).
+
+### 🏁 Entregando a atividade
+
+1. Responda a atividade **#10 no Classroom** com:
+    - O link para o repositório.
+    - O link com o endereço do seu projeto publicado na internet.
+
+### 💯 Avaliação
+
+- Relevância
+- Usabilidade -  Design e Organização/Padronização.
+- Funcionamento/Completude
+- Documentação - Relato de implementação
+
+Ideias:
+Estrutura do Projeto com ReqRes API
+1️⃣ index.html – Lista de Usuários (GET)
+Função: Página principal que exibe usuários paginados.
+
+Endpoint: GET https://reqres.in/api/users?page=1
+
+Recursos da API usados:
+
+Listar usuários (com foto de avatar padrão da ReqRes ou complementada com DiceBear).
+
+Botão "Próxima página" que redireciona para next.html.
+
+Layout Sugerido:
+
+Card para cada usuário (imagem + nome + e-mail).
+
+Botão "Ver detalhes" (leva para next.html com parâmetro ?id=1).
+
+Paginação simples (ou botão "Próxima página" → next.html?page=2).
+
+2️⃣ next.html – Detalhes do Usuário + Edição (GET + PUT/PATCH)
+Função: Mostra detalhes de um usuário específico e permite edição.
+
+
+Recursos da API usados:
+
+Busca por ID (parâmetro da URL, ex: next.html?id=2).
+
+Formulário para editar nome/e-mail (simula PUT/PATCH).
+
+Layout Sugerido:
+
+Foto do usuário (avatar).
+
+Formulário de edição (nome, e-mail).
+
+Botão "Salvar" (simula PUT/PATCH).
+
+Link para voltar à index.html.
+
+3️⃣ sobre.html – Página Estática + Criar Usuário (POST)
+Função:
+
+Parte estática: Explica o projeto e a API usada.
+
+Parte dinâmica: Formulário para criar novo usuário (simulando POST).
+
+Endpoint: POST https://reqres.in/api/users
+
+Recursos da API usados:
+
+Criação de usuário fictício (a API não persiste dados, mas simula a resposta).
+
+Exemplo de código:
+
+Seção "Sobre o Projeto" (texto explicativo).
+
+Formulário de cadastro (nome + botão "Criar").
+
+Link para index.html.
+
+✅ Como Fica a Estrutura Final:
+Página	     Métodos HTTP	        Funcionalidade	                 Endpoint
+index.html  	GET	            Lista usuários paginados	            /api/users?page=1
+next.html	    GET + PUT	    Detalhes e edição de usuário	        /api/users/2
+sobre.html	    POST	C       riar novo usuário + info projeto	    /api/users
+
+💡 Dicas Extras:
+Use localStorage para simular persistência (ex: salvar usuários "criados").
+
+Adicione um spinner durante carregamento das requisições.
+
+Trate erros (ex: usuário não encontrado em next.html).
+
+Incremente com imagens:
+
+Use user.avatar (ReqRes) ou combine com DiceBear como mostrado acima.

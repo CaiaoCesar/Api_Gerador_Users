@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
+
+    <title>Acessar Usuários</title>
+
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+    <header>
+        <nav class="navibar">
+            <ul>
+                <li><a href="index.html">Listar</a></li>
+                <li><a href="next.html">Editar</a></li>
+                <li><a href="about.html">Sobre</a></li>
+            </ul>
+
+            <img src="images/logo1.png" alt="Logo">  
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="header-info">
+            <h1>User Craft</h1>
+            <p>Aqui você pode acessar e personalizar usuários ficticios</p>
+        </div>
+
+        <h3>✅ Busque um Usuário específico:</h3>
+        <form id="search-users">
+            <input type="search" name="buscar" placeholder="Pesquisar Usuário 👤" autofocus>
+            <button id="search" type="submit">Pesquisar 🔍</button>
+        </form>
+       
+        <button onclick="getUsers">Ver todos os Usuários 👀</button>
+
+        <h2>Aqui estão os Usuários Ficticios Cadastrados</h2>
+
+        <h3>Quer personalizar Usuários? <a id="link-next" href="next.html">Venha aqui...</a></h3>
+    </div>
+
+    <ul data-js="users" class="users"></ul>
+
+    <footer>
+        <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
