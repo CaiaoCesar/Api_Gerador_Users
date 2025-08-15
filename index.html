@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-
-    <title>Acessar Usuários</title>
-
+    <title>Acessar Usuários | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -17,7 +15,6 @@
                 <li><a href="next.html">Editar</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
-
             <img src="images/logo1.png" alt="Logo">  
         </nav>
     </header>
@@ -25,19 +22,49 @@
     <div class="container">
         <div class="header-info">
             <h1>User Craft</h1>
-            <p>Aqui você pode acessar e personalizar usuários ficticios</p>
+            <p class="subtitle">Explore e interaja com nossa coleção de usuários fictícios</p>
         </div>
        
-        <button onclick="getUsers">Ver todos os Usuários 👀</button>
+        <div class="intro-section">
+            <p>Bem-vindo ao User Craft! Aqui você pode:</p>
+            <ul>
+                <li>Visualizar todos os usuários disponíveis</li>
+                <li>Ver detalhes completos de cada perfil</li>
+                <li>Navegar entre páginas de resultados</li>
+            </ul>
+        </div>
 
-        <h2>Aqui estão os Usuários Ficticios Cadastrados</h2>
+        <div class="action-buttons">
+            <button class="btn-todos-usuarios" onclick="getUsers()">Carregar Todos os Usuários 👀</button>
+            <a href="next.html" class="btn-customize">Personalizar Usuários ✏️</a>
+        </div>
 
-        <h3>Quer personalizar Usuários? <a id="link-next" href="next.html">Venha aqui...</a></h3>
+        <div class="search-section">
+            <h3>🔍 Encontre um usuário específico:</h3>
+            <input type="text" placeholder="Digite um nome ou email..." class="search-input">
+            <button class="search-btn">Buscar</button>
+        </div>
+
+        <div class="stats-section">
+            <p>Total de usuários disponíveis: <span id="user-count">12</span></p>
+            <p>Página atual: <span id="current-page">1</span></p>
+        </div>
+
+        <h2 class="section-title">Usuários Fictícios Disponíveis</h2>
+        <ul data-js="users" class="users"></ul>
+
+        <div class="pagination">
+            <button class="prev-btn">← Anterior</button>
+            <span class="page-indicator">Página 1</span>
+            <button class="next-btn">Próxima →</button>
+        </div>
     </div>
 
-    <ul data-js="users" class="users"></ul>
-
     <footer>
+        <div class="footer-links">
+            <a href="https://github.com/CaiaoCesar" target="_blank"><img src="images/github.png" alt="Icone Github"></a>
+            <a href="mailto:caiocesarc61@gmail.com"><img src="images/email.png" alt="Icone Email"></a>
+        </div>
         <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
     </footer>
 
