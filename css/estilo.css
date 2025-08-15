@@ -16,6 +16,15 @@ body{
     font-style: normal;
 }
 
+h1{
+    text-align: center;
+    font-size: 3.5em;
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    font-size: 2.8em;
+    font-style: italic;
+}
+
 .container{
     max-width: 800px;
     margin: 0 auto;
@@ -66,6 +75,27 @@ body{
     justify-content: center;
     text-align: center;
     margin-bottom: 16px;
+}
+
+a{
+    color: #219ba3;
+}
+
+.footer-links{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.footer-links img {
+    display: block;
+    max-width: 80px;
+    height: auto; 
+    justify-content: space-between;
+    padding: 52px;
 }
 
 footer{

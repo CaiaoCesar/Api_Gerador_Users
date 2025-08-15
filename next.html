@@ -17,13 +17,43 @@
                 <li><a href="next.html">Editar</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
+
+            <img src="images/logo1.png" alt="Logo"> 
         </nav>
     </header>
 
+    <div class="container">
+        <div class="header-info">
+            <h1>Personalizador de Usuários</h1>
+            <p>Acesse, crie e personalize seus Usuários Fictícios</p>
+        </div>
+
+        <div class="adiciona-user">
+            <h2>Personalize seus Usuários Fictícios</h2>
+            <form class="add-user">
+                <input type="text" name="first_name" placeholder="Primeiro Nome" required>
+                <input type="text" name="last_name" placeholder="Sobrenome" required>
+                <input type="text" name="email" placeholder="Email" required> 
+                <input type="url" name="avatar" placeholder="URL da Foto" required>
+                <button id="adicionar-usuario">Adicionar Usuário 👤</button>
+            </form>
+        </div>
+
+        
+        <h3>✅ Busque um Usuário específico:</h3>
+        <form id="search-users">
+            <input type="search" name="buscar" placeholder="Pesquisar Usuário 👤" autofocus>
+            <button id="search" type="submit">Pesquisar 🔍</button>
+        </form>
+
+        <div class="resultados"></div>
+    </div>
+
     <footer>
-        <p>&copy; User Craft 2025 - Todos os direitos reservados .</p>
+        <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
     </footer>
 
     <script src="js/main.js"></script>
 </body>
 </html>
+
