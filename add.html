@@ -34,27 +34,19 @@
             </ul>
         </div>
 
-        <div class="action-buttons">
-            <a href="index.html" class="btn-todos-usuarios">Todos os Usuários</a>
-            <a href="next.html" class="btn-customize">Personalizar Usuários ✏️</a>
+       
+        <div class="adiciona-user">
+            <h2>Personalize seus Usuários Fictícios</h2>
+            <form class="add-user">
+                <input type="text" name="first_name" placeholder="Primeiro Nome" required>
+                <input type="text" name="last_name" placeholder="Sobrenome" required>
+                <input type="text" name="email" placeholder="Email" required> 
+                <input type="url" name="avatar" placeholder="URL da Foto" required>
+                <button id="adicionar-usuario">Adicionar Usuário 👤</button>
+            </form>
         </div>
 
-        <div class="users"></div>
-
-        <div class="stats-section">
-            <p>Total de usuários disponíveis: <span id="user-count">0</span></p>
-            <p>Página atual: <span id="current-page">1</span></p>
-        </div>
-
-        <h2 class="section-title">Usuários Fictícios Disponíveis</h2>
-
-        <div class="stats-section"></div>
-
-        <div class="pagination">
-            <button class="prev-btn">← Anterior</button>
-            <span class="page-indicator">Página 1</span>
-            <button class="next-btn">Próxima →</button>
-        </div>
+        <div class="return-menu"><a href="next.html"> Voltar ao Menu...</a></div>
     </div>
 
     <footer>

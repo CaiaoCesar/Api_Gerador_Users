@@ -14,7 +14,7 @@
         <nav class="navibar">
             <ul>
                 <li><a href="index.html">Listar</a></li>
-                <li><a href="next.html">Editar</a></li>
+                <li><a href="next.html">Menu</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
 
@@ -22,22 +22,21 @@
         </nav>
     </header>
 
+
+    <nav class="menu">
+        <ul>
+            <li><a href="/edit.html" id="edit-usuario">Editar usuário</a></li>
+            <li><a href="/add.html" id="criar-usuario">Criar usuário</a></li>
+            <li><a href="/delete.html" id="apagar-usuario">Apagar usuário</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <div class="header-info">
             <h1>Personalizador de Usuários</h1>
             <p>Acesse, crie e personalize seus Usuários Fictícios</p>
         </div>
 
-        <div class="adiciona-user">
-            <h2>Personalize seus Usuários Fictícios</h2>
-            <form class="add-user">
-                <input type="text" name="first_name" placeholder="Primeiro Nome" required>
-                <input type="text" name="last_name" placeholder="Sobrenome" required>
-                <input type="text" name="email" placeholder="Email" required> 
-                <input type="url" name="avatar" placeholder="URL da Foto" required>
-                <button id="adicionar-usuario">Adicionar Usuário 👤</button>
-            </form>
-        </div>
 
         <div class="search-section">
             <h3>🔍 Encontre um usuário específico:</h3>
@@ -47,7 +46,6 @@
             </form>
         </div>
 
-        
         <div class="resultados"></div>
     </div>
 

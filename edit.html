@@ -34,27 +34,16 @@
             </ul>
         </div>
 
-        <div class="action-buttons">
-            <a href="index.html" class="btn-todos-usuarios">Todos os Usuários</a>
-            <a href="next.html" class="btn-customize">Personalizar Usuários ✏️</a>
-        </div>
+                   <!-- Formulário para atualizar os dados do usuário -->
+        <form id="update-form">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email">
+            <button id="update-btn">Atualizar</button>
+        </form>
 
-        <div class="users"></div>
-
-        <div class="stats-section">
-            <p>Total de usuários disponíveis: <span id="user-count">0</span></p>
-            <p>Página atual: <span id="current-page">1</span></p>
-        </div>
-
-        <h2 class="section-title">Usuários Fictícios Disponíveis</h2>
-
-        <div class="stats-section"></div>
-
-        <div class="pagination">
-            <button class="prev-btn">← Anterior</button>
-            <span class="page-indicator">Página 1</span>
-            <button class="next-btn">Próxima →</button>
-        </div>
+        <div class="return-menu"><a href="next.html"> Voltar ao Menu...</a></div>
     </div>
 
     <footer>
