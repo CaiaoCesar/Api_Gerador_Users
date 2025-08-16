@@ -35,23 +35,20 @@
         </div>
 
         <div class="action-buttons">
-            <button class="btn-todos-usuarios" onclick="getUsers()">Carregar Todos os Usuários 👀</button>
+            <a href="index.html" class="btn-todos-usuarios">Todos os Usuários</a>
             <a href="next.html" class="btn-customize">Personalizar Usuários ✏️</a>
         </div>
 
-        <div class="search-section">
-            <h3>🔍 Encontre um usuário específico:</h3>
-            <input type="text" placeholder="Digite um nome ou email..." class="search-input">
-            <button class="search-btn">Buscar</button>
-        </div>
+        <div class="users"></div>
 
         <div class="stats-section">
-            <p>Total de usuários disponíveis: <span id="user-count">12</span></p>
+            <p>Total de usuários disponíveis: <span id="user-count">0</span></p>
             <p>Página atual: <span id="current-page">1</span></p>
         </div>
 
         <h2 class="section-title">Usuários Fictícios Disponíveis</h2>
-        <ul data-js="users" class="users"></ul>
+
+        <div class="stats-section"></div>
 
         <div class="pagination">
             <button class="prev-btn">← Anterior</button>

@@ -254,6 +254,23 @@ a:hover{
     cursor: pointer;
 }
 
+/* Adicione no final do arquivo */
+.pagination, .stats-section, .section-title {
+    display: none; /* Esconde inicialmente */
+}
+
+.pagination.visible, .stats-section.visible, .section-title.visible {
+    display: flex; /* Mostra quando tiver classe 'visible' */
+}
+
+.stats-section.visible {
+    display: block;
+}
+
+.section-title.visible {
+    display: block;
+}
+
 .stats-section {
     display: flex;
     justify-content: space-around;
