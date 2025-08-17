@@ -1,10 +1,11 @@
-// ===== FUNÇÕES PARA A PÁGINA DE EDIÇÃO ===== //
+/* ============================================= */
+/* ============ PÁGINA DE EDIÇÃO ============== */
+/* ============================================= */
 
 function initializeEditPage() {
-    // Verifica se estamos na página de edição
     if (!document.getElementById("users-container-edit")) return;
     
-    // Elementos da página de edição
+    // Elementos da página
     const searchBtnEdit = document.getElementById("search-btn-edit");
     const showAllBtnEdit = document.getElementById("show-all-btn-edit");
     const usersContainerEdit = document.getElementById("users-container-edit");
@@ -18,34 +19,38 @@ function initializeEditPage() {
     let filteredUsersEdit = [];
     let currentUserEdit = null;
 
-    // Carrega os usuários ao iniciar
+    // Inicialização
     loadUsersForEdit();
 
     // Event Listeners
     if (searchBtnEdit) searchBtnEdit.addEventListener("click", searchUsersForEdit);
     if (showAllBtnEdit) showAllBtnEdit.addEventListener("click", loadUsersForEdit);
-    if (searchInputEdit) {
-        searchInputEdit.addEventListener("keyup", function(e) {
-            if (e.key === "Enter") searchUsersForEdit();
-        });
-    }
+    if (searchInputEdit) searchInputEdit.addEventListener("keyup", handleSearchKeyup);
     if (cancelEditBtn) cancelEditBtn.addEventListener("click", cancelEdit);
+    if (updateForm) updateForm.addEventListener("submit", handleUpdateSubmit);
 
-    // Função para carregar todos os usuários para edição
+    // Atualiza a pré-visualização
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const avatarInput = document.getElementById("avatar");
+    
+    if (nameInput) nameInput.addEventListener("input", updatePreview);
+    if (emailInput) emailInput.addEventListener("input", updatePreview);
+    if (avatarInput) avatarInput.addEventListener("input", updatePreview);
+
+    /* ----- FUNÇÕES ----- */
+
     async function loadUsersForEdit() {
         try {
             usersContainerEdit.innerHTML = "<p>Carregando usuários...</p>";
             
-            // Carrega da API
             const apiResponse = await fetch('https://reqres.in/api/users?per_page=12', {
                 headers: { "x-api-key": "reqres-free-v1" }
             });
             const apiData = await apiResponse.json();
             
-            // Carrega do localStorage
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
             
-            // Combina os resultados
             allUsersEdit = [...apiData.data, ...localUsers];
             filteredUsersEdit = [...allUsersEdit];
             
@@ -56,7 +61,6 @@ function initializeEditPage() {
         }
     }
 
-    // Função para buscar usuários na página de edição
     function searchUsersForEdit() {
         const term = searchInputEdit.value.trim().toLowerCase();
         
@@ -73,7 +77,6 @@ function initializeEditPage() {
         displayUsersForEdit(filteredUsersEdit);
     }
 
-    // Função para exibir usuários na lista de edição
     function displayUsersForEdit(users) {
         if (users.length === 0) {
             usersContainerEdit.innerHTML = '<p class="error">Nenhum usuário encontrado</p>';
@@ -92,7 +95,6 @@ function initializeEditPage() {
             </div>
         `).join("");
         
-        // Adiciona eventos aos botões de seleção
         document.querySelectorAll(".select-user-btn").forEach(btn => {
             btn.addEventListener("click", function() {
                 const userId = this.closest(".user-card").dataset.id;
@@ -101,19 +103,16 @@ function initializeEditPage() {
         });
     }
 
-    // Função para selecionar um usuário para edição
     function selectUserForEdit(userId) {
         currentUserEdit = filteredUsersEdit.find(user => user.id == userId);
         
         if (!currentUserEdit) return;
         
-        // Preenche o formulário
         document.getElementById("user-id").value = currentUserEdit.id;
         document.getElementById("name").value = `${currentUserEdit.first_name} ${currentUserEdit.last_name}`;
         document.getElementById("email").value = currentUserEdit.email;
         document.getElementById("avatar").value = currentUserEdit.avatar || "";
         
-        // Atualiza a pré-visualização
         document.getElementById("editing-user-name").textContent = 
             `${currentUserEdit.first_name} ${currentUserEdit.last_name}`;
         document.getElementById("preview-name").textContent = 
@@ -122,12 +121,10 @@ function initializeEditPage() {
         document.getElementById("preview-avatar").src = 
             currentUserEdit.avatar || "https://via.placeholder.com/150";
         
-        // Mostra a seção de edição
         document.querySelector(".user-selection-section").style.display = "none";
         editSection.style.display = "block";
     }
 
-    // Função para cancelar a edição
     function cancelEdit() {
         editSection.style.display = "none";
         document.querySelector(".user-selection-section").style.display = "block";
@@ -135,77 +132,62 @@ function initializeEditPage() {
         currentUserEdit = null;
     }
 
-    // Função para atualizar o usuário
-    if (updateForm) {
-        updateForm.addEventListener("submit", async function(e) {
-            e.preventDefault();
-            
-            if (!currentUserEdit) return;
-            
-            // Extrai os dados do formulário
-            const [firstName, lastName] = document.getElementById("name").value.split(" ");
-            const email = document.getElementById("email").value;
-            const avatar = document.getElementById("avatar").value;
-            
-            try {
-                // 1. Atualização na API (simulada)
-                if (currentUserEdit.id < 100) { // IDs baixos são da API
-                    await fetch(`https://reqres.in/api/users/${currentUserEdit.id}`, {
-                        method: "PUT",
-                        headers: {
-                            "x-api-key": "reqres-free-v1",
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            name: `${firstName} ${lastName}`,
-                            job: "Usuário atualizado"
-                        })
-                    });
-                }
-                
-                // 2. Atualização local
-                const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-                const userIndex = localUsers.findIndex(u => u.id == currentUserEdit.id);
-                
-                if (userIndex !== -1) {
-                    localUsers[userIndex] = {
-                        ...localUsers[userIndex],
-                        first_name: firstName,
-                        last_name: lastName || "",
-                        email: email,
-                        avatar: avatar || localUsers[userIndex].avatar
-                    };
-                } else if (currentUserEdit.id >= 100) { // Novo usuário local
-                    localUsers.push({
-                        id: currentUserEdit.id,
-                        first_name: firstName,
-                        last_name: lastName || "",
-                        email: email,
-                        avatar: avatar || "https://via.placeholder.com/150"
-                    });
-                }
-                
-                localStorage.setItem("userCraftUsers", JSON.stringify(localUsers));
-                
-                alert("Usuário atualizado com sucesso!");
-                cancelEdit();
-                loadUsersForEdit(); // Recarrega a lista
-            } catch (error) {
-                console.error("Erro ao atualizar usuário:", error);
-                alert("Erro ao atualizar usuário");
+    async function handleUpdateSubmit(e) {
+        e.preventDefault();
+        
+        if (!currentUserEdit) return;
+        
+        const [firstName, lastName] = document.getElementById("name").value.split(" ");
+        const email = document.getElementById("email").value;
+        const avatar = document.getElementById("avatar").value;
+        
+        try {
+            if (currentUserEdit.id < 100) {
+                await fetch(`https://reqres.in/api/users/${currentUserEdit.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "x-api-key": "reqres-free-v1",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: `${firstName} ${lastName}`,
+                        job: "Usuário atualizado"
+                    })
+                });
             }
-        });
+            
+            const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
+            const userIndex = localUsers.findIndex(u => u.id == currentUserEdit.id);
+            
+            if (userIndex !== -1) {
+                localUsers[userIndex] = {
+                    ...localUsers[userIndex],
+                    first_name: firstName,
+                    last_name: lastName || "",
+                    email: email,
+                    avatar: avatar || localUsers[userIndex].avatar
+                };
+            } else if (currentUserEdit.id >= 100) {
+                localUsers.push({
+                    id: currentUserEdit.id,
+                    first_name: firstName,
+                    last_name: lastName || "",
+                    email: email,
+                    avatar: avatar || "https://via.placeholder.com/150"
+                });
+            }
+            
+            localStorage.setItem("userCraftUsers", JSON.stringify(localUsers));
+            
+            alert("Usuário atualizado com sucesso!");
+            cancelEdit();
+            loadUsersForEdit();
+        } catch (error) {
+            console.error("Erro ao atualizar usuário:", error);
+            alert("Erro ao atualizar usuário");
+        }
     }
 
-    // Atualiza a pré-visualização quando os campos mudam
-    const nameInput = document.getElementById("name");
-    const emailInput = document.getElementById("email");
-    const avatarInput = document.getElementById("avatar");
-    
-    if (nameInput) nameInput.addEventListener("input", updatePreview);
-    if (emailInput) emailInput.addEventListener("input", updatePreview);
-    if (avatarInput) avatarInput.addEventListener("input", updatePreview);
-    
     function updatePreview() {
         const name = document.getElementById("name").value || "Nome do Usuário";
         const email = document.getElementById("email").value || "email@exemplo.com";
@@ -215,15 +197,20 @@ function initializeEditPage() {
         document.getElementById("preview-email").textContent = email;
         document.getElementById("preview-avatar").src = avatar;
     }
+
+    function handleSearchKeyup(e) {
+        if (e.key === "Enter") searchUsersForEdit();
+    }
 }
 
+/* ============================================= */
+/* ============ PÁGINA DE DELETE ============== */
+/* ============================================= */
 
-// ===== FUNÇÕES PARA A PÁGINA DE DELETE ===== //
 function initializeDeletePage() {
-    // Verifica se estamos na página de delete
     if (!document.getElementById("users-container-delete")) return;
     
-    // Elementos da página de delete
+    // Elementos da página
     const searchBtnDelete = document.getElementById("search-btn-delete");
     const showAllBtnDelete = document.getElementById("show-all-btn-delete");
     const usersContainerDelete = document.getElementById("users-container-delete");
@@ -238,35 +225,29 @@ function initializeDeletePage() {
     let filteredUsersDelete = [];
     let currentUserToDelete = null;
 
-    // Carrega os usuários ao iniciar
+    // Inicialização
     loadUsersForDelete();
 
     // Event Listeners
     if (searchBtnDelete) searchBtnDelete.addEventListener("click", searchUsersForDelete);
     if (showAllBtnDelete) showAllBtnDelete.addEventListener("click", loadUsersForDelete);
-    if (searchInputDelete) {
-        searchInputDelete.addEventListener("keyup", function(e) {
-            if (e.key === "Enter") searchUsersForDelete();
-        });
-    }
+    if (searchInputDelete) searchInputDelete.addEventListener("keyup", handleSearchKeyup);
     if (cancelDeleteBtn) cancelDeleteBtn.addEventListener("click", cancelDelete);
     if (confirmDeleteBtn) confirmDeleteBtn.addEventListener("click", confirmDelete);
 
-    // Função para carregar todos os usuários para delete
+    /* ----- FUNÇÕES ----- */
+
     async function loadUsersForDelete() {
         try {
             usersContainerDelete.innerHTML = "<p>Carregando usuários...</p>";
             
-            // Carrega da API
             const apiResponse = await fetch('https://reqres.in/api/users?per_page=12', {
                 headers: { "x-api-key": "reqres-free-v1" }
             });
             const apiData = await apiResponse.json();
             
-            // Carrega do localStorage
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
             
-            // Combina os resultados
             allUsersDelete = [...apiData.data, ...localUsers];
             filteredUsersDelete = [...allUsersDelete];
             
@@ -277,7 +258,6 @@ function initializeDeletePage() {
         }
     }
 
-    // Função para buscar usuários na página de delete
     function searchUsersForDelete() {
         const term = searchInputDelete.value.trim().toLowerCase();
         
@@ -294,7 +274,6 @@ function initializeDeletePage() {
         displayUsersForDelete(filteredUsersDelete);
     }
 
-    // Função para exibir usuários na lista de delete
     function displayUsersForDelete(users) {
         if (users.length === 0) {
             usersContainerDelete.innerHTML = '<p class="error">Nenhum usuário encontrado</p>';
@@ -313,7 +292,6 @@ function initializeDeletePage() {
             </div>
         `).join("");
         
-        // Adiciona eventos aos botões de delete
         document.querySelectorAll(".delete-user-btn").forEach(btn => {
             btn.addEventListener("click", function() {
                 const userId = this.closest(".user-card").dataset.id;
@@ -322,35 +300,29 @@ function initializeDeletePage() {
         });
     }
 
-    // Função para selecionar um usuário para delete
     function selectUserForDelete(userId) {
         currentUserToDelete = filteredUsersDelete.find(user => user.id == userId);
         
         if (!currentUserToDelete) return;
         
-        // Atualiza a confirmação
         document.getElementById("user-to-delete-name").textContent = 
             `${currentUserToDelete.first_name} ${currentUserToDelete.last_name}`;
         
-        // Mostra a seção de confirmação
         document.querySelector(".user-selection-section").style.display = "none";
         confirmationSection.style.display = "block";
     }
 
-    // Função para cancelar a exclusão
     function cancelDelete() {
         confirmationSection.style.display = "none";
         document.querySelector(".user-selection-section").style.display = "block";
         currentUserToDelete = null;
     }
 
-    // Função para confirmar a exclusão
     async function confirmDelete() {
         if (!currentUserToDelete) return;
         
         try {
-            // 1. Remoção simulada na API ReqRes
-            if (currentUserToDelete.id < 100) { // IDs baixos são da API
+            if (currentUserToDelete.id < 100) {
                 const response = await fetch(`https://reqres.in/api/users/${currentUserToDelete.id}`, {
                     method: "DELETE",
                     headers: { "x-api-key": "reqres-free-v1" }
@@ -361,22 +333,18 @@ function initializeDeletePage() {
                 }
             }
             
-            // 2. Remoção local
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
             const updatedUsers = localUsers.filter(u => u.id != currentUserToDelete.id);
             localStorage.setItem("userCraftUsers", JSON.stringify(updatedUsers));
             
-            // Feedback para o usuário
             deleteStatus.innerHTML = `
                 <div class="success-message">
                     Usuário ${currentUserToDelete.first_name} ${currentUserToDelete.last_name} removido com sucesso!
                 </div>
             `;
             
-            // Recarrega a lista
             cancelDelete();
             loadUsersForDelete();
-            
         } catch (error) {
             console.error("Erro ao deletar usuário:", error);
             deleteStatus.innerHTML = `
@@ -386,26 +354,37 @@ function initializeDeletePage() {
             `;
         }
     }
+
+    function handleSearchKeyup(e) {
+        if (e.key === "Enter") searchUsersForDelete();
+    }
 }
 
-// ===== FUNÇÕES PARA A PÁGINA DE ADICIONAR USUÁRIO ===== //
+/* ============================================= */
+/* ========= PÁGINA DE ADICIONAR USUÁRIO ====== */
+/* ============================================= */
+
 function initializeAddPage() {
-    // Verifica se estamos na página de adicionar
     if (!document.getElementById("add-user-form")) return;
     
     const addForm = document.getElementById("add-user-form");
     const statusElement = document.getElementById("add-user-status");
     
-    // Atualiza a pré-visualização quando os campos mudam
+    // Elementos de input
     const firstNameInput = document.getElementById("first_name");
     const lastNameInput = document.getElementById("last_name");
     const emailInput = document.getElementById("email");
     const avatarInput = document.getElementById("avatar");
     
+    // Event Listeners
     [firstNameInput, lastNameInput, emailInput, avatarInput].forEach(input => {
         input.addEventListener("input", updateUserPreview);
     });
     
+    addForm.addEventListener("submit", handleAddSubmit);
+
+    /* ----- FUNÇÕES ----- */
+
     function updateUserPreview() {
         const firstName = firstNameInput.value || "Nome";
         const lastName = lastNameInput.value || "Completo";
@@ -417,15 +396,13 @@ function initializeAddPage() {
         document.getElementById("preview-avatar").src = avatar;
     }
     
-    // Manipula o envio do formulário
-    addForm.addEventListener("submit", async function(e) {
+    async function handleAddSubmit(e) {
         e.preventDefault();
         
         const formData = new FormData(addForm);
         const userData = Object.fromEntries(formData.entries());
         
         try {
-            // 1. Simula criação na ReqRes (sem persistência real)
             const res = await fetch("https://reqres.in/api/users", {
                 method: "POST",
                 headers: {
@@ -439,10 +416,7 @@ function initializeAddPage() {
             });
             const data = await res.json();
             
-            // 2. Persiste localmente
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-            
-            // Cria um ID único para o novo usuário
             const newUserId = data.id || Date.now();
             
             localUsers.push({
@@ -455,17 +429,14 @@ function initializeAddPage() {
             
             localStorage.setItem("userCraftUsers", JSON.stringify(localUsers));
             
-            // Feedback visual
             statusElement.innerHTML = `
                 <div class="success-message">
                     Usuário ${userData.first_name} ${userData.last_name} criado com sucesso! ID: ${newUserId}
                 </div>
             `;
             
-            // Limpa o formulário
             addForm.reset();
             updateUserPreview();
-            
         } catch (error) {
             console.error("Erro ao criar usuário:", error);
             statusElement.innerHTML = `
@@ -474,27 +445,25 @@ function initializeAddPage() {
                 </div>
             `;
         }
-    });
+    }
 }
 
-// ===== FUNÇÕES PARA A PÁGINA DE MENU ===== //
+/* ============================================= */
+/* ============== PÁGINA DE MENU ============== */
+/* ============================================= */
+
 function initializeMenuPage() {
-    // Verifica se estamos na página de menu
     if (!document.getElementById("total-users")) return;
     
     // Atualiza o contador de usuários
     async function updateUserCount() {
         try {
-            // Carrega usuários da API
             const apiResponse = await fetch('https://reqres.in/api/users?per_page=12', {
                 headers: { "x-api-key": "reqres-free-v1" }
             });
             const apiData = await apiResponse.json();
             
-            // Carrega do localStorage
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-            
-            // Soma os usuários
             const total = apiData.data.length + localUsers.length;
             document.getElementById("total-users").textContent = total;
         } catch (error) {
@@ -503,14 +472,14 @@ function initializeMenuPage() {
         }
     }
     
-    // Inicializa
     updateUserCount();
 }
 
+/* ============================================= */
+/* ============== PÁGINA INDEX ================ */
+/* ============================================= */
 
-// ===== FUNÇÕES PARA A PÁGINA INDEX ===== //
 function initializeIndexPage() {
-    // Verifica se estamos na página index
     if (!document.getElementById("users-list")) return;
     
     // Elementos da página
@@ -532,71 +501,31 @@ function initializeIndexPage() {
     let filteredUsers = [];
     let searchTerm = '';
     
-    // Inicializa a página
+    // Inicialização
     loadUsers();
     
-    // Event listeners
-    if (searchForm) {
-        searchForm.addEventListener("submit", function(e) {
-            e.preventDefault();
-            searchTerm = document.querySelector("input[name='buscar']").value.trim().toLowerCase();
-            currentPage = 1;
-            filterAndDisplayUsers();
-        });
-    }
-    
-    if (resetSearchBtn) {
-        resetSearchBtn.addEventListener("click", function() {
-            searchTerm = '';
-            if (searchForm) searchForm.reset();
-            currentPage = 1;
-            filterAndDisplayUsers();
-        });
-    }
-    
-    if (refreshBtn) {
-        refreshBtn.addEventListener("click", loadUsers);
-    }
-    
-    if (prevBtn) {
-        prevBtn.addEventListener("click", function() {
-            if (currentPage > 1) {
-                currentPage--;
-                filterAndDisplayUsers();
-            }
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener("click", function() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                filterAndDisplayUsers();
-            }
-        });
-    }
-    
-    // Função para carregar usuários
+    // Event Listeners
+    if (searchForm) searchForm.addEventListener("submit", handleSearchSubmit);
+    if (resetSearchBtn) resetSearchBtn.addEventListener("click", handleResetSearch);
+    if (refreshBtn) refreshBtn.addEventListener("click", loadUsers);
+    if (prevBtn) prevBtn.addEventListener("click", goToPrevPage);
+    if (nextBtn) nextBtn.addEventListener("click", goToNextPage);
+
+    /* ----- FUNÇÕES ----- */
+
     async function loadUsers() {
         try {
             usersList.innerHTML = '<div class="loading-message">Carregando usuários...</div>';
             
-            // Carrega da API
             const apiResponse = await fetch('https://reqres.in/api/users?per_page=12', {
                 headers: { "x-api-key": "reqres-free-v1" }
             });
             const apiData = await apiResponse.json();
             
-            // Carrega do localStorage
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-            
-            // Combina os resultados
             allUsers = [...apiData.data, ...localUsers];
             
-            // Atualiza contagem total
             totalUsersCount.textContent = allUsers.length;
-            
-            // Filtra e exibe
             filterAndDisplayUsers();
         } catch (error) {
             console.error("Erro ao carregar usuários:", error);
@@ -604,9 +533,7 @@ function initializeIndexPage() {
         }
     }
     
-    // Função para filtrar e exibir usuários
     function filterAndDisplayUsers() {
-        // Filtra os usuários
         if (searchTerm) {
             filteredUsers = allUsers.filter(user => 
                 `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm) ||
@@ -617,26 +544,18 @@ function initializeIndexPage() {
             filteredUsers = [...allUsers];
         }
         
-        // Atualiza contagem
         usersFoundCount.textContent = filteredUsers.length;
-        
-        // Calcula paginação
         const usersPerPage = 6;
         totalPages = Math.ceil(filteredUsers.length / usersPerPage);
         
-        // Pega os usuários da página atual
         const startIndex = (currentPage - 1) * usersPerPage;
         const endIndex = startIndex + usersPerPage;
         const usersToDisplay = filteredUsers.slice(startIndex, endIndex);
         
-        // Exibe os usuários
         displayUsers(usersToDisplay);
-        
-        // Atualiza controles de paginação
         updatePaginationControls();
     }
     
-    // Função para exibir usuários
     function displayUsers(users) {
         if (users.length === 0) {
             usersList.innerHTML = '<div class="no-users-message">Nenhum usuário encontrado</div>';
@@ -663,16 +582,11 @@ function initializeIndexPage() {
         `).join('');
     }
     
-    // Função para atualizar controles de paginação
     function updatePaginationControls() {
-        // Atualiza página atual
         currentPageElement.textContent = currentPage;
-        
-        // Atualiza botões anterior/próximo
         prevBtn.disabled = currentPage === 1;
         nextBtn.disabled = currentPage === totalPages;
         
-        // Atualiza números de página
         pageNumbers.innerHTML = '';
         const maxPagesToShow = 5;
         let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
@@ -694,6 +608,34 @@ function initializeIndexPage() {
         }
     }
     
+    function handleSearchSubmit(e) {
+        e.preventDefault();
+        searchTerm = document.querySelector("input[name='buscar']").value.trim().toLowerCase();
+        currentPage = 1;
+        filterAndDisplayUsers();
+    }
+    
+    function handleResetSearch() {
+        searchTerm = '';
+        if (searchForm) searchForm.reset();
+        currentPage = 1;
+        filterAndDisplayUsers();
+    }
+    
+    function goToPrevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            filterAndDisplayUsers();
+        }
+    }
+    
+    function goToNextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            filterAndDisplayUsers();
+        }
+    }
+    
     // Função global para confirmar exclusão
     window.confirmDelete = function(userId) {
         if (confirm('Tem certeza que deseja remover este usuário?')) {
@@ -701,11 +643,9 @@ function initializeIndexPage() {
         }
     };
     
-    // Função para deletar usuário
     async function deleteUser(userId) {
         try {
-            // 1. Remoção simulada na API ReqRes (para usuários da API)
-            if (userId < 100) { // IDs baixos são da API
+            if (userId < 100) {
                 const response = await fetch(`https://reqres.in/api/users/${userId}`, {
                     method: "DELETE",
                     headers: { "x-api-key": "reqres-free-v1" }
@@ -716,15 +656,11 @@ function initializeIndexPage() {
                 }
             }
             
-            // 2. Remoção local
             const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
             const updatedUsers = localUsers.filter(u => u.id != userId);
             localStorage.setItem("userCraftUsers", JSON.stringify(updatedUsers));
             
-            // 3. Atualiza a lista
             loadUsers();
-            
-            // Feedback
             alert('Usuário removido com sucesso!');
         } catch (error) {
             console.error("Erro ao remover usuário:", error);
@@ -733,404 +669,315 @@ function initializeIndexPage() {
     }
 }
 
+/* ============================================= */
+/* ============ EVENTO DOMContentLoaded ======= */
+/* ============================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
-  const btnTodosUsuarios = document.querySelector(".btn-todos-usuarios");
-  const usersContainer = document.querySelector(".users");
+document.addEventListener("DOMContentLoaded", function() {
+    // Inicializa todas as páginas
+    initializeEditPage();
+    initializeDeletePage();
+    initializeAddPage();
+    initializeMenuPage();
+    initializeIndexPage();
 
-  const pageIndicator = document.querySelector(".page-indicator");
-  const antButton = document.querySelector(".prev-btn");
-  const proxButton = document.querySelector(".next-btn");
-  const statsSection = document.querySelector(".stats-section");
-  const sectionTitle = document.querySelector(".section-title");
-  const pagination = document.querySelector(".pagination");
-
-  let pagAtual = 1;
-  let totalPags = 1;
-
-  const pesquisa = document.getElementById("search");
-  const resultado = document.querySelector(".resultados");
-
-
-   initializeEditPage();
-   initializeDeletePage();
-   initializeAddPage();
-   initializeMenuPage();
-   initializeIndexPage();
-
-  function tooglePagination(show) {
-    if (show) {
-      statsSection.classList.add("visible");
-      sectionTitle.classList.add("visible");
-      pagination.classList.add("visible");
-    } else {
-      statsSection.classList.remove("visible");
-      sectionTitle.classList.remove("visible");
-      pagination.classList.remove("visible");
-    }
-  }
-
-  tooglePagination(false);
-
-  // Pesquisar Usuários por Nome
-  // Pesquisar Usuários por Nome
-  async function searchUsers() {
-    const searchForm = document.getElementById("search-users");
+    // Funções específicas da página index.html
+    const btnTodosUsuarios = document.querySelector(".btn-todos-usuarios");
+    const usersContainer = document.querySelector(".users");
+    const pageIndicator = document.querySelector(".page-indicator");
+    const antButton = document.querySelector(".prev-btn");
+    const proxButton = document.querySelector(".next-btn");
+    const statsSection = document.querySelector(".stats-section");
+    const sectionTitle = document.querySelector(".section-title");
+    const pagination = document.querySelector(".pagination");
+    const pesquisa = document.getElementById("search");
     const resultado = document.querySelector(".resultados");
 
-    if (!searchForm || !resultado) return;
+    let pagAtual = 1;
+    let totalPags = 1;
 
-    searchForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const termo = document
-        .querySelector("input[name='buscar']")
-        .value.trim()
-        .toLowerCase();
-      if (!termo) return;
-
-      resultado.innerHTML = "<p>Buscando...</p>";
-
-      try {
-        let allUsers = [];
-        let page = 1;
-        let totalPages = 1;
-
-        // Varre todas as páginas
-        while (page <= totalPages) {
-          const res = await fetch(`https://reqres.in/api/users?page=${page}`, {
-            headers: { "x-api-key": "reqres-free-v1" },
-          });
-          const data = await res.json();
-
-          totalPages = data.total_pages;
-          allUsers = [...allUsers, ...data.data];
-          page++;
+    function tooglePagination(show) {
+        if (show) {
+            statsSection.classList.add("visible");
+            sectionTitle.classList.add("visible");
+            pagination.classList.add("visible");
+        } else {
+            statsSection.classList.remove("visible");
+            sectionTitle.classList.remove("visible");
+            pagination.classList.remove("visible");
         }
+    }
 
-        // Filtra localmente
-        const encontrados = allUsers.filter(
-          (user) =>
-            user.first_name.toLowerCase().includes(termo) ||
-            user.last_name.toLowerCase().includes(termo)
-        );
+    tooglePagination(false);
 
-        resultado.innerHTML = encontrados.length
-          ? encontrados
-              .map(
-                (user) => `
-                        <div class="usuario-card">
-                            <img src="${user.avatar}" alt="${user.first_name}">
-                            <div>
-                                <h3>${user.first_name} ${user.last_name}</h3>
-                                <p>${user.email}</p>
-                                <p>ID: ${user.id}</p>
-                            </div>
-                        </div>
-                    `
-              )
-              .join("")
-          : '<p class="error">Nenhum usuário encontrado</p>';
-      } catch (error) {
-        console.error("Erro na busca:", error);
-        resultado.innerHTML = '<p class="error">Erro na busca</p>';
-      }
-    });
-  }
+    // Pesquisar Usuários por Nome
+    async function searchUsers() {
+        const searchForm = document.getElementById("search-users");
+        const resultado = document.querySelector(".resultados");
 
-  // Buscar todos os usuários
+        if (!searchForm || !resultado) return;
 
-  const urlApi = "https://reqres.in/api/users";
+        searchForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  async function showUsers(page = 1) {
-    try {
-      const response = await fetch(`${urlApi}?page=${page}`, {
-        headers: {
-          "x-api-key": "reqres-free-v1",
-        },
-      });
+            const termo = document.querySelector("input[name='buscar']").value.trim().toLowerCase();
+            if (!termo) return;
 
-      const usuarios = await response.json();
+            resultado.innerHTML = "<p>Buscando...</p>";
 
-      tooglePagination(true);
+            try {
+                let allUsers = [];
+                let page = 1;
+                let totalPages = 1;
 
-      pagAtual = usuarios.page;
-      totalPags = usuarios.total_pages;
+                while (page <= totalPages) {
+                    const res = await fetch(`https://reqres.in/api/users?page=${page}`, {
+                        headers: { "x-api-key": "reqres-free-v1" },
+                    });
+                    const data = await res.json();
 
-      usersContainer.innerHTML = "";
+                    totalPages = data.total_pages;
+                    allUsers = [...allUsers, ...data.data];
+                    page++;
+                }
 
-      pageIndicator.textContent = `Página ${pagAtual} de ${totalPags}`;
+                const encontrados = allUsers.filter(
+                    user => user.first_name.toLowerCase().includes(termo) ||
+                           user.last_name.toLowerCase().includes(termo)
+                );
 
-      antButton.disabled = pagAtual === 1;
-      proxButton.disabled = pagAtual === totalPags;
-
-      usuarios.data.forEach((usuario) => {
-        const nomeUsuario = usuario.first_name + " " + usuario.last_name;
-        const idUsuario = usuario.id;
-        const emailUsuario = usuario.email;
-        const avatarUsuario = usuario.avatar;
-
-        const usuarioHTML = `
-                    <li class="lista-usuario">
-                        <div class = "usuario-card">
-                            <div class="img-usuario">
-                                <img src="${avatarUsuario}">
-                            </div>
-
-                            <div class="info-usuario">
-                                id="${idUsuario}"
-                                <h3>${nomeUsuario}</h3>
-                            </div>
-
-                            <div class="email-usuario">
-                                <p>${emailUsuario}</p>
-                            </div>
-                        </div>   
-                    </li>            
-                `;
-
-        usersContainer.innerHTML = usuarios.data
-          .map(
-            (usuario) => `
-                    <li class="lista-usuario">
-                        <div class="usuario-card" data-id="${usuario.id}">
-                            <div class="img-usuario">
-                                <img src="${usuario.avatar}">
-                            </div>
-                            <div class="info-usuario">
-                                <h3>${usuario.first_name} ${usuario.last_name}</h3>
-                                <div class="email-usuario">
-                                    <p>${usuario.email}</p>
+                resultado.innerHTML = encontrados.length
+                    ? encontrados.map(user => `
+                            <div class="usuario-card">
+                                <img src="${user.avatar}" alt="${user.first_name}">
+                                <div>
+                                    <h3>${user.first_name} ${user.last_name}</h3>
+                                    <p>${user.email}</p>
+                                    <p>ID: ${user.id}</p>
                                 </div>
                             </div>
-                            <div class="user-actions">
-                                <button class="edit-btn">✏️ Editar</button>
-                                <button class="delete-btn">🗑️ Remover</button>
+                        `).join("")
+                    : '<p class="error">Nenhum usuário encontrado</p>';
+            } catch (error) {
+                console.error("Erro na busca:", error);
+                resultado.innerHTML = '<p class="error">Erro na busca</p>';
+            }
+        });
+    }
+
+    // Buscar todos os usuários
+    const urlApi = "https://reqres.in/api/users";
+
+    async function showUsers(page = 1) {
+        try {
+            const response = await fetch(`${urlApi}?page=${page}`, {
+                headers: { "x-api-key": "reqres-free-v1" }
+            });
+
+            const usuarios = await response.json();
+
+            tooglePagination(true);
+
+            pagAtual = usuarios.page;
+            totalPags = usuarios.total_pages;
+
+            usersContainer.innerHTML = "";
+
+            pageIndicator.textContent = `Página ${pagAtual} de ${totalPags}`;
+
+            antButton.disabled = pagAtual === 1;
+            proxButton.disabled = pagAtual === totalPags;
+
+            usersContainer.innerHTML = usuarios.data.map(usuario => `
+                <li class="lista-usuario">
+                    <div class="usuario-card" data-id="${usuario.id}">
+                        <div class="img-usuario">
+                            <img src="${usuario.avatar}">
+                        </div>
+                        <div class="info-usuario">
+                            <h3>${usuario.first_name} ${usuario.last_name}</h3>
+                            <div class="email-usuario">
+                                <p>${usuario.email}</p>
                             </div>
                         </div>
-                    </li>
-                `
-          )
-          .join("");
-      });
+                        <div class="user-actions">
+                            <button class="edit-btn">✏️ Editar</button>
+                            <button class="delete-btn">🗑️ Remover</button>
+                        </div>
+                    </div>
+                </li>
+            `).join("");
 
-      document.getElementById("user-count").textContent = usuarios.total;
-      document.getElementById("current-page").textContent = pagAtual;
-    } catch (error) {
-      console.error("Error:", error);
-      usersContainer.innerHTML =
-        '<li class="error">Ocorreu um erro ao buscar os usuários.</li>';
-
-      tooglePagination(false);
+            document.getElementById("user-count").textContent = usuarios.total;
+            document.getElementById("current-page").textContent = pagAtual;
+        } catch (error) {
+            console.error("Error:", error);
+            usersContainer.innerHTML = '<li class="error">Ocorreu um erro ao buscar os usuários.</li>';
+            tooglePagination(false);
+        }
     }
-  }
 
-  btnTodosUsuarios.addEventListener("click", () => showUsers(1));
+    // Event Listeners
+    if (btnTodosUsuarios) btnTodosUsuarios.addEventListener("click", () => showUsers(1));
+    if (antButton) antButton.addEventListener("click", () => {
+        if (pagAtual > 1) showUsers(pagAtual - 1);
+    });
+    if (proxButton) proxButton.addEventListener("click", () => {
+        if (pagAtual < totalPags) showUsers(pagAtual + 1);
+    });
 
-  antButton.addEventListener("click", () => {
-    if (pagAtual > 1) {
-      showUsers(pagAtual - 1);
+    showUsers(1);
+
+    // Atualiza Usuário
+    async function setupUserUpdate() {
+        const usersContainer = document.querySelector(".users");
+
+        usersContainer.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("edit-btn")) {
+                const card = e.target.closest(".usuario-card");
+                const userId = card.dataset.id;
+
+                const newName = prompt(
+                    "Novo nome completo:",
+                    card.querySelector("h3").textContent
+                );
+                const newEmail = prompt(
+                    "Novo email:",
+                    card.querySelector(".email-usuario p").textContent
+                );
+
+                if (newName && newEmail) {
+                    try {
+                        const response = await fetch(`https://reqres.in/api/users/${userId}`, {
+                            method: "PUT",
+                            headers: {
+                                "x-api-key": "reqres-free-v1",
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                name: newName,
+                                job: "Usuário atualizado",
+                            }),
+                        });
+
+                        const updatedUser = await response.json();
+
+                        const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
+                        const userIndex = localUsers.findIndex((u) => u.id == userId);
+
+                        if (userIndex !== -1) {
+                            const [firstName, lastName] = newName.split(" ");
+                            localUsers[userIndex] = {
+                                ...localUsers[userIndex],
+                                first_name: firstName,
+                                last_name: lastName || "",
+                                email: newEmail,
+                            };
+                            localStorage.setItem("userCraftUsers", JSON.stringify(localUsers));
+                        }
+
+                        alert("Usuário atualizado!");
+                        showLocalUsers();
+                    } catch (error) {
+                        console.error("Erro ao atualizar:", error);
+                        alert("Erro ao atualizar usuário");
+                    }
+                }
+            }
+        });
     }
-  });
-  proxButton.addEventListener("click", () => {
-    if (pagAtual < totalPags) {
-      showUsers(pagAtual + 1);
+
+    // Apaga Usuario
+    async function setupUserDeletion() {
+        const usersContainer = document.querySelector(".users");
+
+        usersContainer.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("delete-btn")) {
+                const card = e.target.closest(".usuario-card");
+                const userId = card.dataset.id;
+
+                if (confirm("Tem certeza que deseja remover este usuário?")) {
+                    try {
+                        const response = await fetch(`https://reqres.in/api/users/${userId}`, {
+                            method: "DELETE",
+                            headers: { "x-api-key": "reqres-free-v1" },
+                        });
+
+                        const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
+                        const updatedUsers = localUsers.filter((u) => u.id != userId);
+                        localStorage.setItem("userCraftUsers", JSON.stringify(updatedUsers));
+
+                        if (response.status === 204) {
+                            alert("Usuário removido!");
+                            showLocalUsers();
+                        }
+                    } catch (error) {
+                        console.error("Erro ao remover:", error);
+                        alert("Erro ao remover usuário");
+                    }
+                }
+            }
+        });
     }
-  });
 
-  showUsers(1);
+    // Cria Usuário
+    async function postUser() {
+        const form = document.querySelector(".add-user");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  //Atualiza Usuário:
-
-  async function setupUserUpdate() {
-    const usersContainer = document.querySelector(".users");
-
-    usersContainer.addEventListener("click", async (e) => {
-      // Verifica se o clique foi no botão de editar
-      if (e.target.classList.contains("edit-btn")) {
-        const card = e.target.closest(".usuario-card");
-        const userId = card.dataset.id;
-
-        // Pede novos dados ao usuário
-        const newName = prompt(
-          "Novo nome completo:",
-          card.querySelector("h3").textContent
-        );
-        const newEmail = prompt(
-          "Novo email:",
-          card.querySelector(".email-usuario p").textContent
-        );
-
-        if (newName && newEmail) {
-          try {
-            // 1. Atualização simulada na API ReqRes
-            const response = await fetch(
-              `https://reqres.in/api/users/${userId}`,
-              {
-                method: "PUT",
+            const res = await fetch("https://reqres.in/api/users", {
+                method: "POST",
                 headers: {
-                  "x-api-key": "reqres-free-v1",
-                  "Content-Type": "application/json",
+                    "x-api-key": "reqres-free-v1",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  name: newName,
-                  job: "Usuário atualizado",
+                    name: `${form.first_name.value} ${form.last_name.value}`,
+                    job: "Usuário UserCraft",
                 }),
-              }
-            );
+            });
+            const data = await res.json();
 
-            const updatedUser = await response.json();
+            const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
+            localUsers.push({
+                id: data.id || Date.now(),
+                ...Object.fromEntries(new FormData(form)),
+            });
+            localStorage.setItem("userCraftUsers", JSON.stringify(localUsers));
 
-            // 2. Atualização local
-            const localUsers =
-              JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-            const userIndex = localUsers.findIndex((u) => u.id == userId);
+            alert(`Usuário criado! ID: ${data.id || "local"}`);
+        });
+    }
 
-            if (userIndex !== -1) {
-              const [firstName, lastName] = newName.split(" ");
-              localUsers[userIndex] = {
-                ...localUsers[userIndex],
-                first_name: firstName,
-                last_name: lastName || "",
-                email: newEmail,
-              };
-              localStorage.setItem(
-                "userCraftUsers",
-                JSON.stringify(localUsers)
-              );
-            }
+    function showLocalUsers() {
+        const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
+        const container = document.querySelector(".users");
 
-            alert("Usuário atualizado!");
-            showLocalUsers(); // Atualiza a exibição
-          } catch (error) {
-            console.error("Erro ao atualizar:", error);
-            alert("Erro ao atualizar usuário");
-          }
-        }
-      }
-    });
-  }
-
-  //Apaga Usuario:
-
-  async function setupUserDeletion() {
-    const usersContainer = document.querySelector(".users");
-
-    usersContainer.addEventListener("click", async (e) => {
-      // Verifica se o clique foi no botão de deletar
-      if (e.target.classList.contains("delete-btn")) {
-        const card = e.target.closest(".usuario-card");
-        const userId = card.dataset.id;
-
-        if (confirm("Tem certeza que deseja remover este usuário?")) {
-          try {
-            // 1. Remoção simulada na API ReqRes
-            const response = await fetch(
-              `https://reqres.in/api/users/${userId}`,
-              {
-                method: "DELETE",
-                headers: { "x-api-key": "reqres-free-v1" },
-              }
-            );
-
-            // 2. Remoção local
-            const localUsers =
-              JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-            const updatedUsers = localUsers.filter((u) => u.id != userId);
-            localStorage.setItem(
-              "userCraftUsers",
-              JSON.stringify(updatedUsers)
-            );
-
-            if (response.status === 204) {
-              alert("Usuário removido!");
-              showLocalUsers(); // Atualiza a exibição
-            }
-          } catch (error) {
-            console.error("Erro ao remover:", error);
-            alert("Erro ao remover usuário");
-          }
-        }
-      }
-    });
-  }
-
-  document.getElementById("delete-btn").addEventListener("click", function() {
-    // Chamar a função de deletar do main.js
-    deleteUsuario();
-});
-
-  //Cria Usuário
-
-  // Função corrigida para criar usuários
-
-  // Função híbrida
-  async function postUser() {
-    const form = document.querySelector(".add-user");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      // 1. Simula criação na ReqRes (sem persistência real)
-      const res = await fetch("https://reqres.in/api/users", {
-        method: "POST",
-        headers: {
-          "x-api-key": "reqres-free-v1",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: `${form.first_name.value} ${form.last_name.value}`,
-          job: "Usuário UserCraft",
-        }),
-      });
-      const data = await res.json();
-
-      // 2. Persiste localmente
-      const localUsers =
-        JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-      localUsers.push({
-        id: data.id || Date.now(),
-        ...Object.fromEntries(new FormData(form)),
-      });
-      localStorage.setItem("userCraftUsers", JSON.stringify(localUsers));
-
-      alert(`Usuário criado! ID: ${data.id || "local"}`);
-    });
-  }
-
-  function showLocalUsers() {
-    const localUsers = JSON.parse(localStorage.getItem("userCraftUsers")) || [];
-    const container = document.querySelector(".users");
-
-    container.innerHTML = localUsers
-      .map(
-        (user) => `
-        <li class="lista-usuario">
-            <div class="usuario-card" data-id="${user.id}">
-                <div class="img-usuario">
-                    <img src="${
-                      user.avatar || "https://reqres.in/img/faces/1-image.jpg"
-                    }">
-                </div>
-                <div class="info-usuario">
-                    <h3>${user.first_name} ${user.last_name}</h3>
-                    <div class="email-usuario">
-                        <p>${user.email}</p>
+        container.innerHTML = localUsers.map(user => `
+            <li class="lista-usuario">
+                <div class="usuario-card" data-id="${user.id}">
+                    <div class="img-usuario">
+                        <img src="${user.avatar || "https://reqres.in/img/faces/1-image.jpg"}">
+                    </div>
+                    <div class="info-usuario">
+                        <h3>${user.first_name} ${user.last_name}</h3>
+                        <div class="email-usuario">
+                            <p>${user.email}</p>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="edit-btn">✏️ Editar</button>
+                        <button class="delete-btn">🗑️ Remover</button>
+                        <small>Armazenado localmente</small>
                     </div>
                 </div>
-                <div class="user-actions">
-                    <button class="edit-btn">✏️ Editar</button>
-                    <button class="delete-btn">🗑️ Remover</button>
-                    <small>Armazenado localmente</small>
-                </div>
-            </div>
-        </li>
-    `
-      )
-      .join("");
-  }
+            </li>
+        `).join("");
+    }
 
-  setupUserUpdate();
-  setupUserDeletion();
-
-  // campos api: email, first_name, last_name, avatar
+    // Inicializa funções
+    setupUserUpdate();
+    setupUserDeletion();
+    searchUsers();
 });
