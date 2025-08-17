@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-   
-    <title>Sobre o User Craft</title>
-
+    <meta name="description" content="Conheça o User Craft - Plataforma para gerenciamento de usuários fictícios">
+    <title>Sobre | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,61 +13,122 @@
             <ul>
                 <li><a href="index.html">Listar</a></li>
                 <li><a href="next.html">Menu</a></li>
-                <li><a href="about.html">Sobre</a></li>
+                <li><a href="about.html" class="active">Sobre</a></li>
             </ul>
-
-            <img src="images/logo1.png" alt="Logo"> 
+            <img src="images/logo1.png" alt="Logo User Craft" class="logo"> 
         </nav>
     </header>
 
     <div class="container">
         <div class="header-info">
             <h1>Sobre o User Craft</h1>
-            <p class="subtitle">Explore o mundo dos usuários fictícios com nossa plataforma interativa.</p>
+            <p class="subtitle">Conheça nossa plataforma para gerenciamento de usuários fictícios</p>
         </div>
 
-        <section class="about-section">
-            <h2>📌 O que é o User Craft?</h2>
-            <p>O User Craft é um projeto lúdico que permite você visualizar, editar e gerenciar perfis de usuários fictícios através da integração com a API pública ReqRes.</p>
-            
-            <div class="feature-box">
-                <h3>✨ Recursos Principais</h3>
-                <ul>
-                    <li>Listagem paginada de usuários</li>
-                    <li>Visualização detalhada de perfis</li>
-                    <li>Edição simulada de informações</li>
-                    <li>Criação de novos usuários fictícios</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="api-section">
-            <h2>🔗 Sobre a ReqRes API</h2>
-            <p>A <a href="https://reqres.in/" target="_blank">ReqRes</a> é uma API RESTful gratuita projetada para simular dados reais e ajudar desenvolvedores a testar e praticar integrações com APIs.</p>
-            <p>Principais endpoints utilizados neste projeto:</p>
-            <ul>
-                <li><code>GET /api/users</code> - Listar usuários</li>
-                <li><code>GET /api/users/:id</code> - Detalhes do usuário</li>
-                <li><code>PUT /api/users/:id</code> - Atualizar usuário</li>
-                <li><code>POST /api/users</code> - Criar novo usuário</li>
-            </ul>
-        </section>
-
-        <section class="cta-section">
-                <h2>🚀 Pronto para começar?</h2>
-                <a href="index.html" class="cta-button">Explorar Usuários</a>
+        <div class="about-content">
+            <section class="about-card">
+                <div class="about-icon">💡</div>
+                <h2>Nossa Missão</h2>
+                <p>O User Craft foi criado para proporcionar uma experiência prática no gerenciamento de dados de usuários, utilizando uma API real mas com dados fictícios, perfeito para aprendizado e testes.</p>
             </section>
-        </div>
 
-        <div class="footer-links">
-            <a href="https://github.com/CaiaoCesar" target="_blank"><img src="images/github.png" alt="Icone Github"></i></a>
-            <a href="mailto:caiocesarc61@gmail.com"><img src="images/email.png" alt="Icone Email"></a>
+            <section class="about-card highlight">
+                <div class="about-icon">✨</div>
+                <h2>Recursos Principais</h2>
+                <ul class="feature-list">
+                    <li><span>👥</span> Listagem completa de usuários com paginação</li>
+                    <li><span>🔍</span> Sistema de busca avançada</li>
+                    <li><span>✏️</span> Edição de perfis existentes</li>
+                    <li><span>🆕</span> Criação de novos usuários</li>
+                    <li><span>🗑️</span> Remoção segura de registros</li>
+                    <li><span>💾</span> Armazenamento local de alterações</li>
+                </ul>
+            </section>
+
+            <section class="about-card">
+                <div class="about-icon">🔧</div>
+                <h2>Tecnologias Utilizadas</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
+                        <span>HTML5</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
+                        <span>CSS3</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://reqres.in/img/faces/logo.png" alt="ReqRes API" style="border-radius:50%">
+                        <span>ReqRes API</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-card api-info">
+                <div class="about-icon">🌐</div>
+                <h2>Sobre a ReqRes API</h2>
+                <p>Utilizamos a <a href="https://reqres.in/" target="_blank" class="api-link">ReqRes API</a>, uma API RESTful gratuita que simula dados reais para fins de teste e aprendizado.</p>
+                
+                <div class="endpoint-list">
+                    <h3>Endpoints utilizados:</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/users</code>
+                        <span class="desc">Listar usuários</span>
+                    </div>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/users/:id</code>
+                        <span class="desc">Detalhes do usuário</span>
+                    </div>
+                    <div class="endpoint">
+                        <span class="method post">POST</span>
+                        <code>/api/users</code>
+                        <span class="desc">Criar usuário</span>
+                    </div>
+                    <div class="endpoint">
+                        <span class="method put">PUT</span>
+                        <code>/api/users/:id</code>
+                        <span class="desc">Atualizar usuário</span>
+                    </div>
+                    <div class="endpoint">
+                        <span class="method delete">DELETE</span>
+                        <code>/api/users/:id</code>
+                        <span class="desc">Remover usuário</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-card cta-section">
+                <h2>Pronto para começar?</h2>
+                <p>Explore todas as funcionalidades do User Craft agora mesmo</p>
+                <div class="cta-buttons">
+                    <a href="index.html" class="btn btn-primary">Ver Usuários</a>
+                    <a href="add.html" class="btn btn-secondary">Criar Novo</a>
+                </div>
+            </section>
         </div>
     </div>
 
     <footer>
         <div class="footer-content">
-            <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
+            <div class="developer-info">
+                <h3>Desenvolvido por</h3>
+                <p>Caio César</p>
+                <div class="social-links">
+                    <a href="https://github.com/CaiaoCesar" target="_blank" aria-label="GitHub">
+                        <img src="images/github.png" alt="GitHub">
+                    </a>
+                    <a href="mailto:caiocesarc61@gmail.com" aria-label="Email">
+                        <img src="images/email.png" alt="Email">
+                    </a>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2025 User Craft. Todos os direitos reservados.</p>
         </div>
     </footer>
 

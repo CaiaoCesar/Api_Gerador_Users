@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-    <title>Acessar Usuários | User Craft</title>
+    <meta name="description" content="Deletar usuários fictícios na plataforma User Craft">
+    <title>Deletar Usuário | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,38 +15,63 @@
                 <li><a href="next.html">Menu</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
-            <img src="images/logo1.png" alt="Logo">  
+            <img src="images/logo1.png" alt="Logo User Craft">  
         </nav>
     </header>
 
     <div class="container">
         <div class="header-info">
-            <h1>User Craft</h1>
-            <p class="subtitle">Explore e interaja com nossa coleção de usuários fictícios</p>
-        </div>
-       
-        <div class="intro-section">
-            <p>Bem-vindo ao User Craft! Aqui você pode:</p>
-            <ul>
-                <li>Visualizar todos os usuários disponíveis</li>
-                <li>Ver detalhes completos de cada perfil</li>
-                <li>Navegar entre páginas de resultados</li>
-            </ul>
+            <h1>Deletar Usuário</h1>
+            <p class="subtitle">Remova usuários da nossa base de dados</p>
         </div>
 
-        <!-- Botão para deletar o usuário -->
-        <button id="delete-btn">Deletar</button>
+        <!-- Seção de busca e seleção -->
+        <div class="user-selection-section">
+            <div class="search-section">
+                <h3>🔍 Selecione um usuário para remover:</h3>
+                <form id="search-users-delete">
+                    <input type="text" name="buscar-delete" placeholder="Pesquise pelo nome ou email..." class="search-input" autofocus>
+                    <button id="search-btn-delete" type="button">Buscar</button>
+                    <button id="show-all-btn-delete" type="button">Mostrar Todos</button>
+                </form>
+            </div>
 
-        <!-- Elemento para exibir a mensagem de confirmação de exclusão -->
-        <div id="delete-msg"></div>
-       
-        <div class="return-menu"><a href="next.html"> Voltar ao Menu...</a></div>
+            <div class="users-list">
+                <div class="users-grid" id="users-container-delete">
+                    <!-- Os usuários serão carregados aqui via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de confirmação (inicialmente oculta) -->
+        <div class="confirmation-section" id="confirmation-section" style="display: none;">
+            <div class="intro-section">
+                <p>Você está prestes a remover o usuário: <strong id="user-to-delete-name"></strong></p>
+                <p>Tem certeza que deseja continuar?</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="cancel-delete" class="btn-cancel">Cancelar</button>
+                <button type="button" id="confirm-delete" class="btn-danger">Confirmar Exclusão</button>
+            </div>
+        </div>
+
+        <!-- Mensagem de status -->
+        <div id="delete-status" class="status-message"></div>
+
+        <div class="return-menu">
+            <a href="next.html" class="back-link">← Voltar ao Menu Principal</a>
+        </div>
     </div>
 
     <footer>
         <div class="footer-links">
-            <a href="https://github.com/CaiaoCesar" target="_blank"><img src="images/github.png" alt="Icone Github"></a>
-            <a href="mailto:caiocesarc61@gmail.com"><img src="images/email.png" alt="Icone Email"></a>
+            <a href="https://github.com/CaiaoCesar" target="_blank" aria-label="GitHub">
+                <img src="images/github.png" alt="Icone GitHub">
+            </a>
+            <a href="mailto:caiocesarc61@gmail.com" aria-label="E-mail">
+                <img src="images/email.png" alt="Icone Email">
+            </a>
         </div>
         <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
     </footer>

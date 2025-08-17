@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-    <title>Acessar Usuários | User Craft</title>
+    <meta name="description" content="Editar usuários fictícios na plataforma User Craft">
+    <title>Editar Usuário | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,41 +15,90 @@
                 <li><a href="next.html">Menu</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
-            <img src="images/logo1.png" alt="Logo">  
+            <img src="images/logo1.png" alt="Logo User Craft">  
         </nav>
     </header>
 
     <div class="container">
         <div class="header-info">
-            <h1>User Craft</h1>
-            <p class="subtitle">Explore e interaja com nossa coleção de usuários fictícios</p>
-        </div>
-       
-        <div class="intro-section">
-            <p>Bem-vindo ao User Craft! Aqui você pode:</p>
-            <ul>
-                <li>Visualizar todos os usuários disponíveis</li>
-                <li>Ver detalhes completos de cada perfil</li>
-                <li>Navegar entre páginas de resultados</li>
-            </ul>
+            <h1>Editar Usuário</h1>
+            <p class="subtitle">Atualize as informações do usuário selecionado</p>
         </div>
 
-                   <!-- Formulário para atualizar os dados do usuário -->
-        <form id="update-form">
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="name">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email">
-            <button id="update-btn">Atualizar</button>
-        </form>
+        <!-- Seção de busca e seleção -->
+        <div class="user-selection-section">
+            <div class="search-section">
+                <h3>🔍 Selecione um usuário para editar:</h3>
+                <form id="search-users-edit">
+                    <input type="text" name="buscar-edit" placeholder="Pesquise pelo nome ou email..." class="search-input" autofocus>
+                    <button id="search-btn-edit" type="button">Buscar</button>
+                    <button id="show-all-btn-edit" type="button">Mostrar Todos</button>
+                </form>
+            </div>
 
-        <div class="return-menu"><a href="next.html"> Voltar ao Menu...</a></div>
+            <div class="users-list">
+                <div class="users-grid" id="users-container-edit">
+                    <!-- Os usuários serão carregados aqui via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de edição (inicialmente oculta) -->
+        <div class="edit-section" id="edit-section" style="display: none;">
+            <div class="intro-section">
+                <p>Editando usuário: <span id="editing-user-name"></span></p>
+            </div>
+
+            <div class="user-edit-form">
+                <form id="update-form">
+                    <input type="hidden" id="user-id" name="id">
+                    
+                    <div class="form-group">
+                        <label for="name">Nome Completo:</label>
+                        <input type="text" id="name" name="name" placeholder="Digite o novo nome" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail:</label>
+                        <input type="email" id="email" name="email" placeholder="novo.email@exemplo.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="avatar">URL da Foto de Perfil:</label>
+                        <input type="url" id="avatar" name="avatar" placeholder="https://exemplo.com/foto.jpg">
+                        <small>Deixe em branco para manter a foto atual</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-edit" class="btn-cancel">Cancelar Edição</button>
+                        <button type="submit" id="update-btn" class="btn-primary">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="user-preview">
+                <h3>Pré-visualização:</h3>
+                <div class="preview-card">
+                    <img id="preview-avatar" src="https://via.placeholder.com/150" alt="Foto do usuário">
+                    <h4 id="preview-name">Nome do Usuário</h4>
+                    <p id="preview-email">email@exemplo.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="return-menu">
+            <a href="next.html" class="back-link">← Voltar ao Menu Principal</a>
+        </div>
     </div>
 
     <footer>
         <div class="footer-links">
-            <a href="https://github.com/CaiaoCesar" target="_blank"><img src="images/github.png" alt="Icone Github"></a>
-            <a href="mailto:caiocesarc61@gmail.com"><img src="images/email.png" alt="Icone Email"></a>
+            <a href="https://github.com/CaiaoCesar" target="_blank" aria-label="GitHub">
+                <img src="images/github.png" alt="Icone GitHub">
+            </a>
+            <a href="mailto:caiocesarc61@gmail.com" aria-label="E-mail">
+                <img src="images/email.png" alt="Icone Email">
+            </a>
         </div>
         <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
     </footer>

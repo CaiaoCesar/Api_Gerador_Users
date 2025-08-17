@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-    <title>Acessar Usuários | User Craft</title>
+    <meta name="description" content="Adicionar novos usuários fictícios na plataforma User Craft">
+    <title>Adicionar Usuário | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -15,44 +15,79 @@
                 <li><a href="next.html">Menu</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
-            <img src="images/logo1.png" alt="Logo">  
+            <img src="images/logo1.png" alt="Logo User Craft">  
         </nav>
     </header>
 
     <div class="container">
         <div class="header-info">
-            <h1>User Craft</h1>
-            <p class="subtitle">Explore e interaja com nossa coleção de usuários fictícios</p>
+            <h1>Adicionar Novo Usuário</h1>
+            <p class="subtitle">Crie e personalize novos usuários fictícios</p>
         </div>
        
         <div class="intro-section">
-            <p>Bem-vindo ao User Craft! Aqui você pode:</p>
+            <p>Preencha o formulário abaixo para criar um novo usuário:</p>
             <ul>
-                <li>Visualizar todos os usuários disponíveis</li>
-                <li>Ver detalhes completos de cada perfil</li>
-                <li>Navegar entre páginas de resultados</li>
+                <li>Todos os campos são obrigatórios</li>
+                <li>O avatar deve ser uma URL válida de imagem</li>
+                <li>Os usuários criados serão armazenados localmente</li>
             </ul>
         </div>
 
-       
-        <div class="adiciona-user">
-            <h2>Personalize seus Usuários Fictícios</h2>
-            <form class="add-user">
-                <input type="text" name="first_name" placeholder="Primeiro Nome" required>
-                <input type="text" name="last_name" placeholder="Sobrenome" required>
-                <input type="text" name="email" placeholder="Email" required> 
-                <input type="url" name="avatar" placeholder="URL da Foto" required>
-                <button id="adicionar-usuario">Adicionar Usuário 👤</button>
+        <div class="user-form-section">
+            <form id="add-user-form" class="add-user-form">
+                <div class="form-group">
+                    <label for="first_name">Primeiro Nome:</label>
+                    <input type="text" id="first_name" name="first_name" placeholder="Ex: João" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Sobrenome:</label>
+                    <input type="text" id="last_name" name="last_name" placeholder="Ex: Silva" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" placeholder="Ex: joao.silva@exemplo.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="avatar">URL do Avatar:</label>
+                    <input type="url" id="avatar" name="avatar" placeholder="https://exemplo.com/foto.jpg" required>
+                    <small>Use uma URL de imagem válida</small>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="reset" class="btn-cancel">Limpar</button>
+                    <button type="submit" id="submit-user" class="btn-primary">Criar Usuário</button>
+                </div>
             </form>
         </div>
 
-        <div class="return-menu"><a href="next.html"> Voltar ao Menu...</a></div>
+        <div class="user-preview">
+            <h3>Pré-visualização:</h3>
+            <div class="preview-card">
+                <img id="preview-avatar" src="https://via.placeholder.com/150" alt="Foto do usuário">
+                <h4 id="preview-name">Nome Completo</h4>
+                <p id="preview-email">email@exemplo.com</p>
+            </div>
+        </div>
+
+        <div id="add-user-status" class="status-message"></div>
+
+        <div class="return-menu">
+            <a href="next.html" class="back-link">← Voltar ao Menu Principal</a>
+        </div>
     </div>
 
     <footer>
         <div class="footer-links">
-            <a href="https://github.com/CaiaoCesar" target="_blank"><img src="images/github.png" alt="Icone Github"></a>
-            <a href="mailto:caiocesarc61@gmail.com"><img src="images/email.png" alt="Icone Email"></a>
+            <a href="https://github.com/CaiaoCesar" target="_blank" aria-label="GitHub">
+                <img src="images/github.png" alt="Icone GitHub">
+            </a>
+            <a href="mailto:caiocesarc61@gmail.com" aria-label="E-mail">
+                <img src="images/email.png" alt="Icone Email">
+            </a>
         </div>
         <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
     </footer>

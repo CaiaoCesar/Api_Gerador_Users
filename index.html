@@ -3,66 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-    <title>Acessar Usuários | User Craft</title>
+    <meta name="description" content="Lista completa de usuários fictícios na plataforma User Craft">
+    <title>Listar Usuários | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
     <header>
         <nav class="navibar">
             <ul>
-                <li><a href="index.html">Listar</a></li>
+                <li><a href="index.html" class="active">Listar</a></li>
                 <li><a href="next.html">Menu</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
-            <img src="images/logo1.png" alt="Logo">  
+            <img src="images/logo1.png" alt="Logo User Craft" class="logo">  
         </nav>
     </header>
 
     <div class="container">
         <div class="header-info">
-            <h1>User Craft</h1>
-            <p class="subtitle">Explore e interaja com nossa coleção de usuários fictícios</p>
+            <h1>Lista de Usuários</h1>
+            <p class="subtitle">Explore nossa coleção completa de usuários fictícios</p>
         </div>
        
         <div class="intro-section">
-            <p>Bem-vindo ao User Craft! Aqui você pode:</p>
-            <ul>
-                <li>Visualizar todos os usuários disponíveis</li>
-                <li>Ver detalhes completos de cada perfil</li>
-                <li>Navegar entre páginas de resultados</li>
-            </ul>
+            <div class="intro-content">
+                <p>Bem-vindo ao painel de usuários do User Craft! Aqui você pode:</p>
+                <ul>
+                    <li>Visualizar todos os usuários disponíveis</li>
+                    <li>Ver detalhes completos de cada perfil</li>
+                    <li>Navegar entre páginas de resultados</li>
+                    <li>Buscar usuários específicos</li>
+                </ul>
+            </div>
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <span class="stat-icon">👥</span>
+                    <h3>Total de Usuários</h3>
+                    <p id="total-users-count">Carregando...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <form id="search-users" class="search-form">
+                <div class="search-input-group">
+                    <input type="text" name="buscar" placeholder="Pesquise por nome, email ou ID..." class="search-input" autofocus>
+                    <button type="submit" class="search-btn">
+                        <span class="search-icon">🔍</span> Buscar
+                    </button>
+                </div>
+            </form>
+            <button id="reset-search" class="btn-secondary">Limpar Busca</button>
         </div>
 
         <div class="action-buttons">
-            <a href="index.html" class="btn-todos-usuarios">Todos os Usuários</a>
-            <a href="next.html" class="btn-customize">Personalizar Usuários ✏️</a>
+            <a href="add.html" class="btn btn-primary">
+                <span>➕</span> Adicionar Novo Usuário
+            </a>
+            <button id="refresh-users" class="btn btn-secondary">
+                <span>🔄</span> Atualizar Lista
+            </button>
         </div>
 
-        <div class="users"></div>
-
-        <div class="stats-section">
-            <p>Total de usuários disponíveis: <span id="user-count">0</span></p>
-            <p>Página atual: <span id="current-page">1</span></p>
-        </div>
-
-        <h2 class="section-title">Usuários Fictícios Disponíveis</h2>
-
-        <div class="stats-section"></div>
-
-        <div class="pagination">
-            <button class="prev-btn">← Anterior</button>
-            <span class="page-indicator">Página 1</span>
-            <button class="next-btn">Próxima →</button>
+        <div class="users-container">
+            <div class="users-header">
+                <h2 class="section-title">
+                    <span id="users-found-count">0</span> usuários encontrados
+                </h2>
+                <div class="pagination-info">
+                    <span class="page-indicator">Página <span id="current-page">1</span></span>
+                </div>
+            </div>
+            
+            <div class="users-grid" id="users-list">
+                <!-- Os usuários serão carregados aqui via JavaScript -->
+                <div class="loading-message">Carregando usuários...</div>
+            </div>
+            
+            <div class="pagination-controls">
+                <button class="pagination-btn prev-btn" disabled>
+                    <span>←</span> Anterior
+                </button>
+                <div class="page-numbers" id="page-numbers">
+                    <!-- Números de página serão gerados aqui -->
+                </div>
+                <button class="pagination-btn next-btn">
+                    Próxima <span>→</span>
+                </button>
+            </div>
         </div>
     </div>
 
     <footer>
-        <div class="footer-links">
-            <a href="https://github.com/CaiaoCesar" target="_blank"><img src="images/github.png" alt="Icone Github"></a>
-            <a href="mailto:caiocesarc61@gmail.com"><img src="images/email.png" alt="Icone Email"></a>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/CaiaoCesar" target="_blank" aria-label="GitHub">
+                    <img src="images/github.png" alt="Icone GitHub">
+                </a>
+                <a href="mailto:caiocesarc61@gmail.com" aria-label="E-mail">
+                    <img src="images/email.png" alt="Icone Email">
+                </a>
+            </div>
+            <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
         </div>
-        <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
     </footer>
 
     <script src="js/main.js"></script>

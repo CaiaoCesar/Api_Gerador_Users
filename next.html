@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Usuários Ficticios, Consumindo a API ReqRes">
-
-    <title>Personalizador de Usuários</title>
-
+    <meta name="description" content="Menu principal do User Craft - Gerencie usuários fictícios">
+    <title>Menu Principal | User Craft</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
@@ -14,46 +12,79 @@
         <nav class="navibar">
             <ul>
                 <li><a href="index.html">Listar</a></li>
-                <li><a href="next.html">Menu</a></li>
+                <li><a href="next.html" class="active">Menu</a></li>
                 <li><a href="about.html">Sobre</a></li>
             </ul>
-
-            <img src="images/logo1.png" alt="Logo"> 
+            <img src="images/logo1.png" alt="Logo User Craft" class="logo"> 
         </nav>
     </header>
 
-
-    <nav class="menu">
-        <ul>
-            <li><a href="/edit.html" id="edit-usuario">Editar usuário</a></li>
-            <li><a href="/add.html" id="criar-usuario">Criar usuário</a></li>
-            <li><a href="/delete.html" id="apagar-usuario">Apagar usuário</a></li>
-        </ul>
-    </nav>
-
     <div class="container">
         <div class="header-info">
-            <h1>Personalizador de Usuários</h1>
-            <p>Acesse, crie e personalize seus Usuários Fictícios</p>
+            <h1>User Craft</h1>
+            <p class="subtitle">Sua plataforma para gerenciamento de usuários fictícios</p>
         </div>
 
+        <div class="dashboard">
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <span>👥</span>
+                </div>
+                <h3>Total de Usuários</h3>
+                <p id="total-users">Carregando...</p>
+                <a href="index.html" class="card-link">Ver Todos</a>
+            </div>
 
-        <div class="search-section">
-            <h3>🔍 Encontre um usuário específico:</h3>
-            <form id="search-users">
-                <input type="text" name="buscar" placeholder="Pesquisar Usuário pelo nome... 👤" class="search-input" autofocus>
-                <button id="search-btn" type="submit">Buscar</button>
-            </form>
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <span>🆕</span>
+                </div>
+                <h3>Novo Usuário</h3>
+                <p>Crie um perfil personalizado</p>
+                <a href="add.html" class="card-link">Criar Agora</a>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <span>⚙️</span>
+                </div>
+                <h3>Gerenciar</h3>
+                <p>Edite ou remova usuários</p>
+                <a href="edit.html" class="card-link">Editar</a>
+                <a href="delete.html" class="card-link">Remover</a>
+            </div>
         </div>
 
-        <div class="resultados"></div>
+        <div class="quick-actions">
+            <h2>Ações Rápidas</h2>
+            <div class="action-buttons">
+                <a href="add.html" class="btn btn-primary">
+                    <span>➕</span> Adicionar Usuário
+                </a>
+                <a href="index.html" class="btn btn-secondary">
+                    <span>👥</span> Listar Todos
+                </a>
+                <a href="edit.html" class="btn btn-edit">
+                    <span>✏️</span> Editar Usuários
+                </a>
+            </div>
+        </div>
     </div>
 
     <footer>
-        <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/CaiaoCesar" target="_blank" aria-label="GitHub">
+                    <img src="images/github.png" alt="Icone GitHub">
+                </a>
+                <a href="mailto:caiocesarc61@gmail.com" aria-label="E-mail">
+                    <img src="images/email.png" alt="Icone Email">
+                </a>
+            </div>
+            <p>&copy; User Craft 2025 - Todos os direitos reservados.</p>
+        </div>
     </footer>
 
     <script src="js/main.js"></script>
 </body>
 </html>
-
